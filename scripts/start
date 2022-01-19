@@ -13,3 +13,4 @@ export POSTGRES_PORT
 
 cd $PROJECT_DIR/app
 ./mvnw clean install
+java -jar ./target/app-0.0.1-SNAPSHOT.jar
