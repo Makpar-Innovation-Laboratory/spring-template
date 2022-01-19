@@ -1,0 +1,15 @@
+#!/bin/bash
+SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
+SCRIPT_NAME="postgres"
+SCRIPT_DES=$''
+PROJECT_DIR=$SCRIPT_DIR/..
+source $PROJECT_DIR/.env
+
+export POSTGRES_PASSWORD
+export POSTGRES_USER
+export POSTGRES_DB
+export POSTGRES_HOST
+export POSTGRES_PORT
+
+cd $PROJECT_DIR/app
+./mvnw clean install
