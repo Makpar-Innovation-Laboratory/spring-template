@@ -1,4 +1,4 @@
-FROM openjdk:8-jdk-alpine AS build
+FROM 894427396428.dkr.ecr.us-east-1.amazonaws.com/innolab-openjdk:Dev AS build
 
 COPY /app/src/ /app/src/
 COPY /app/mvnw /app/
@@ -8,7 +8,7 @@ WORKDIR /app/
 RUN ./mvnw install -DskipTests
 RUN mkdir -p target/dependency && (cd target/dependency; jar -xf ../*.jar)
 
-FROM openjdk:8-jdk-alpine
+FROM 894427396428.dkr.ecr.us-east-1.amazonaws.com/innolab-openjdk:Dev
 RUN apk update -y && apk add -y bash
 COPY --from=build /app/target/dependency/BOOT-INF/lib /app/lib
 COPY --from=build /app/target/dependency/META-INF /app/META-INF
