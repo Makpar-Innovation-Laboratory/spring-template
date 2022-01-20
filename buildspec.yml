@@ -57,7 +57,7 @@ phases:
                     --env POSTGRES_PASSWORD=$POSTGRES_PASSWORD \
                     --env POSTGRES_DB=$POSTGRES_DB \
                     $AWS_ACCOUNT_ID.dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com/innolab-postgres:${BRANCH^}
-                    
+        wait-for-it $POSTGRES_HOST:$POSTGRES_PORT
   pre_build:
     commands:
       # TODO: Run Unit Tests
