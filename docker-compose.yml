@@ -5,12 +5,12 @@ services:
       depends_on:
         - data
       ports:
-        - "8000:8000"
+        - "8081:8081"
       networks:
         - data_net
       env_file: 
         - .env
-        
+
     data:
       image: postgres:12
       restart: always
