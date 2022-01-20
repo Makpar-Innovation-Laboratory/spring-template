@@ -27,7 +27,7 @@ phases:
       # pull base images
       - | 
         bash -c '
-          docker pull $AWS_ACCOUNT_ID.dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com/${APPLICATION}-owasp:${BRANCH^}    
+          docker pull $AWS_ACCOUNT_ID.dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com/innolab-owasp:Dev    
         '
       # # install Testing and Documentation Dependencies
       # - |
@@ -52,11 +52,11 @@ phases:
       # SonarQube static code analysis
       - |
         sonar-scanner \
-          -Dsonar.projectKey=${APPLICATION}-frontend${ENV} \
+          -Dsonar.projectKey=${APPLICATION}-backend${ENV} \
           -Dsonar.host.url=https://$SONAR_URL \
           -Dsonar.login=$SONAR_TOKEN \
           -Dsonar.log.level=DEBUG \
-          -Dsonar.sources=$(pwd)/frontend/src/ \
+          -Dsonar.sources=$(pwd)/app/src/ \
           -Dsonar.exclusions=**/*.json,**/*.css,**/*.scss,**/*.svg,**/*.html \
           -Dsonar.sourceEncoding=UTF-8 \
       # see: https://docs.sonarqube.org/latest/analysis/coverage/
@@ -67,7 +67,7 @@ phases:
         bash -c '
           docker build -t ${APPLICATION}-backend:${BRANCH^} .
           docker tag ${APPLICATION}-backend:${BRANCH^} \
-              $AWS_ACCOUNT_ID.dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com/${APPLICATION}-frontend:${BRANCH^}
+              $AWS_ACCOUNT_ID.dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com/${APPLICATION}-backend:${BRANCH^}
         '
   
   post_build:
@@ -110,7 +110,7 @@ phases:
       #     cd ../..
       #   '
 
-      # OWASP ZAP Scan
+      # # OWASP ZAP Scan
       # - |
       #   bash -c '
       #     mkdir -p $(pwd)/out
@@ -118,8 +118,8 @@ phases:
       #     docker run --volume $(pwd)/out:/zap/wrk/:rw \
       #                --network host \
       #                --tty \
-      #                894427396428.dkr.ecr.us-east-1.amazonaws.com/innolab-owasp:Dev \
-      #                zap-full-scan.py -t http://localhost:8080 -r OWASP_report_frontend.html
+      #                $AWS_ACCOUNT_ID.dkr.ecr.us-east-1.amazonaws.com/innolab-owasp:Dev \
+      #                zap-full-scan.py -t http://localhost:8081 -r OWASP_report_frontend.html
       #     aws s3 cp ./out/OWASP_report_frontend.html s3://${APPLICATION}-data-files/zap_report/OWASP_report_frontend.html
       #   '
         
@@ -141,5 +141,5 @@ phases:
       # Push image to ECR -> Signal deploy pipeline to take over
       - |
         bash -c '
-          docker push $AWS_ACCOUNT_ID.dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com/${APPLICATION}-frontend:${BRANCH^}
+          docker push $AWS_ACCOUNT_ID.dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com/${APPLICATION}-backend:${BRANCH^}
         '
