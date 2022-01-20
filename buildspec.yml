@@ -5,7 +5,7 @@ phases:
   install: 
     runtime-versions:
       python: 3.9
-      java: openjdk8
+      java: corretto8
     commands:
       # initialize environment
       - |
