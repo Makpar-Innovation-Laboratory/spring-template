@@ -5,6 +5,7 @@ phases:
   install: 
     runtime-versions:
       python: 3.9
+      java: openjdk8
     commands:
       # initialize environment
       - |
@@ -16,6 +17,11 @@ phases:
         fi
         apt-get update -y
         apt-get install -y wait-for-it
+        export POSTGRES_DB=test
+        export POSTGRES_USER=test
+        export POSTGRES_PASSWORD=test
+        export POSTGRES_PORT=5432
+        export POSTGRES_HOST=localhost
       # start up Docker
       - |
         nohup /usr/local/bin/dockerd --host=unix:///var/run/docker.sock --host=tcp://0.0.0.0:2375 --storage-driver=overlay&
@@ -27,7 +33,8 @@ phases:
       # pull base images
       - | 
         bash -c '
-          docker pull $AWS_ACCOUNT_ID.dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com/innolab-owasp:Dev
+          docker pull $AWS_ACCOUNT_ID.dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com/innolab-owasp:${BRANCH^}
+          docker pull $AWS_ACCOUNT_ID.dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com/innolab-postgres:${BRANCH^}
         '
       # # install Testing and Documentation Dependencies
       # - |
@@ -42,12 +49,26 @@ phases:
             -o "sonar_scanner.zip"
         unzip sonar_scanner.zip > /dev/null 2>&1
         export PATH=$(pwd)/sonar-scanner-4.6.2.2472-linux/bin/:$PATH
-  
+      # Start Postgres service
+      - | 
+        docker run --detach \
+                    --publish $POSTGRES_PORT:$POSTGRES_PORT \
+                    --env POSTGRES_USER=$POSTGRES_USER \
+                    --env POSTGRES_PASSWORD=$POSTGRES_PASSWORD \
+                    --env POSTGRES_DB=$POSTGRES_DB \
+                    $AWS_ACCOUNT_ID.dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com/innolab-postgres:${BRANCH^}
+                    
   pre_build:
     commands:
       # TODO: Run Unit Tests
  
       # TODO: Linting
+
+      # Compile for Sonar
+      - |
+        cd app
+        mvn clean install
+        cd ..
       
       # SonarQube static code analysis
       - |
@@ -60,7 +81,7 @@ phases:
           -Dsonar.exclusions=**/*.json,**/*.css,**/*.scss,**/*.svg,**/*.html \
           -Dsonar.scm.exclusions.disabled=true \
           -Dsonar.sourceEncoding=UTF-8 \
-          -Dsonar.java.binaries=$(pwd)/app/target
+          -Dsonar.java.binaries=$(pwd)/app/target/
       # see: https://docs.sonarqube.org/latest/analysis/coverage/
 
   build:

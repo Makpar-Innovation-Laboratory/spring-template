@@ -41,10 +41,11 @@ export POSTGRES_PORT
 # ...all the other variables Spring requires
 ```
 
-However, this can be tedious. It is recommended, instead of manually compiling the jar and exporting the environment variables in your session, simply use the *start* script,
+However, this can be tedious. It is recommended, instead of manually compiling the jar and exporting the environment variables in your session, simply use the *run* script twice; once with an argument of `--action install` and a second time with an argument of `--action run`,
 
 ```shell
-./scripts/start
+./scripts/run --action install
+./scripts/run --action run
 ```
 
 This script will perform all the steps detailed above.

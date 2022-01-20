@@ -1,0 +1,59 @@
+#!/bin/bash
+SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
+SCRIPT_NAME="run"
+SCRIPT_DES=$''
+PROJECT_DIR=$SCRIPT_DIR/..
+source $PROJECT_DIR/.env
+
+# Example Usage:
+# >$     app --action <install | run>
+
+#   NOTE: ``--action`` defaults to `create` if not supplied
+function log(){
+    echo -e "\e[92m$(date +"%r")\e[0m: \e[4;32m$SCRIPT_NAME\e[0m : >> $1"
+}
+
+function help(){
+    echo -e "\n\e[4m$SCRIPT_NAME\e[0m\n\n\t$SCRIPT_DES" 
+}
+
+while [[ $# -gt 0 ]]; do
+    key="$1"
+    case $key in
+        --action|-action|--a|-a)
+            ACTION="$2"
+            shift
+            shift 
+            ;;
+        --help|-help|--h|-h)
+            help
+            exit 0
+            ;;
+        *)
+            log "Input not understood. See \e[3m--help\e[0m for information on using this command."
+            exit 1
+            ;;
+    esac
+done
+
+if [[ -z "$ACTION" || ("${ACTION,,}" != "install" && "${ACTION,,}" != "run") ]]
+then
+    log "Either \e[1minstall\e[0m or \e[1mrun\e[0m must be specified through \e[3m--action\e[0m argument."
+    exit 1
+fi
+
+export POSTGRES_PASSWORD
+export POSTGRES_USER
+export POSTGRES_DB
+export POSTGRES_HOST
+export POSTGRES_PORT
+
+cd $PROJECT_DIR/app
+
+if [ "$ACTION" == "install" ]
+then
+    ./mvnw clean install    
+elif [ "$ACTION" == "run" ]
+then
+    java -jar ./target/app-0.0.1-SNAPSHOT.jar
+fi
