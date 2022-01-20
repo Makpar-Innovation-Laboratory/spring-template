@@ -60,6 +60,7 @@ phases:
           -Dsonar.exclusions=**/*.json,**/*.css,**/*.scss,**/*.svg,**/*.html \
           -Dsonar.scm.exclusions.disabled=true \
           -Dsonar.sourceEncoding=UTF-8 \
+          -Dsonar.java.binaries=$(pwd)/app/target
       # see: https://docs.sonarqube.org/latest/analysis/coverage/
 
   build:
