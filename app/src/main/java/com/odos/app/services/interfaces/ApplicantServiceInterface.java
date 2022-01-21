@@ -1,7 +1,6 @@
 package com.odos.app.services.interfaces;
 
 import java.util.List;
-
 import com.odos.app.models.applicant.Applicant;
  
 // Class

@@ -1,4 +1,5 @@
 package com.odos.app.models.applicant.attributes;
+
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;

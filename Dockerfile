@@ -9,7 +9,7 @@ RUN ./mvnw install -DskipTests
 RUN mkdir -p target/dependency && (cd target/dependency; jar -xf ../*.jar)
 
 FROM 894427396428.dkr.ecr.us-east-1.amazonaws.com/innolab-openjdk:Dev
-RUN apk update -y && apk add -y bash
+RUN apk update && apk add bash
 COPY --from=build /app/target/dependency/BOOT-INF/lib /app/lib
 COPY --from=build /app/target/dependency/META-INF /app/META-INF
 COPY --from=build /app/target/dependency/BOOT-INF/classes /app
