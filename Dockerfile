@@ -14,6 +14,6 @@ COPY --from=build /app/target/dependency/BOOT-INF/lib /app/lib
 COPY --from=build /app/target/dependency/META-INF /app/META-INF
 COPY --from=build /app/target/dependency/BOOT-INF/classes /app
 COPY /scripts/docker/entrypoint/entrypoint.sh /scripts/entrypoint.sh
-COPY /scripts/wait-for-it /scripts/wait-for-it
+COPY /scripts/util/wait-for-it /scripts/wait-for-it
 ENV PATH=/scripts/:${PATH}
 ENTRYPOINT [ "entrypoint.sh" ]
