@@ -27,7 +27,7 @@ public class ApplicantService implements ApplicantServiceInterface {
  
     // Update operation
     @Override
-    public Applicant updateDepartment(Applicant applicant, Long applicantId){
+    public Applicant updateApplicant(Applicant applicant, Long applicantId){
         Applicant app = applicantRepository.findById(applicantId).get();
  
         if (Objects.nonNull(applicant.getApplicantName())) {
@@ -39,8 +39,7 @@ public class ApplicantService implements ApplicantServiceInterface {
  
     // Delete operation
     @Override
-    public void deleteApplicantById(Long applicantId)
-    {
+    public void deleteApplicantById(Long applicantId){
         applicantRepository.deleteById(applicantId);
     }
 }

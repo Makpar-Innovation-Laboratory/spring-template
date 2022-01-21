@@ -14,8 +14,7 @@ public interface ApplicantServiceInterface {
     public List<Applicant> fetchApplicantList();
  
     // Update operation
-    public Applicant updateDepartment(Applicant applicant,
-                                Long applicantId);
+    public Applicant updateApplicant(Applicant applicant, Long applicantId);
  
     // Delete operation
     public void deleteApplicantById(Long applicantId);
