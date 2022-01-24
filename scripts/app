@@ -8,7 +8,7 @@ source $PROJECT_DIR/.env
 # Example Usage:
 # >$     app --action <install | run>
 
-#   NOTE: ``--action`` defaults to `create` if not supplied
+#   NOTE: ``--action`` defaults to `install` if not supplied
 function log(){
     echo -e "\e[92m$(date +"%r")\e[0m: \e[4;32m$SCRIPT_NAME\e[0m : >> $1"
 }
@@ -55,5 +55,5 @@ then
     ./mvnw clean install    
 elif [ "$ACTION" == "run" ]
 then
-    java -jar ./target/app-0.0.1-SNAPSHOT.jar
+    java -jar ./target/app-0.0.1.jar
 fi

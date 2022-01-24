@@ -8,4 +8,5 @@ source $PROJECT_DIR/.env
 docker run --name $APPLICATION-postgres \
             --publish 5432:5432 \
             --env-file $PROJECT_DIR/.env \
+            --detach \
             postgres:12
