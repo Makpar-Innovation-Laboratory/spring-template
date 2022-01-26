@@ -1,5 +1,6 @@
 # Spring Boot Template
 
+
 This repo contains the code scaffolding to get started on a [Spring Boot application](https://spring.io/guides/gs/spring-boot/).
 
 ## Prerequisites
